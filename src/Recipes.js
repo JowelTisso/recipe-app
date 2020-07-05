@@ -6,12 +6,7 @@ const Recipe = ({ title, calories, healthLabels, image, ingredients }) => {
 
   return (
     <div className="card mx-auto" style={{ width: "18rem", height: "100%" }}>
-      <img
-        className="card-img-top"
-        style={{ height: "20rem" }}
-        src={image}
-        alt="Card image cap"
-      />
+      <img className="card-img-top" style={{ height: "20rem" }} src={image} />
       <div className="card-body d-flex flex-column">
         <h5 className="card-title">{title}</h5>
         <div className="row">
@@ -30,13 +25,13 @@ const Recipe = ({ title, calories, healthLabels, image, ingredients }) => {
             })}
           </div>
         </div>
-        <a
+        <div
           className="btn btn-primary mt-auto"
           data-toggle="collapse"
           data-target={`#${targetId}`}
         >
           Recipe
-        </a>
+        </div>
         <div className="collapse" id={targetId}>
           {ingredients.map((ingredient, index) => (
             <p className="card-text" key={index}>
