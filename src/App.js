@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import Recipe from "./Recipes";
+import { ClipLoader } from "react-spinners";
 
 const App = () => {
   const APP_ID = "44e6321f";
@@ -13,16 +14,15 @@ const App = () => {
   const url = `https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}`;
 
   useEffect(() => {
-    getRecipes();
-  }, [query]);
-
-  const getRecipes = () => {
-    fetch(url).then((res) => {
-      res.json().then((data) => {
-        setRecipes(data.hits);
+    const getRecipes = () => {
+      fetch(url).then((res) => {
+        res.json().then((data) => {
+          setRecipes(data.hits);
+        });
       });
-    });
-  };
+    };
+    getRecipes();
+  }, [query, url]);
 
   const updateSearch = (e) => {
     setSearch(e.target.value);
@@ -32,6 +32,16 @@ const App = () => {
     e.preventDefault();
     setQuery(search);
     setSearch("");
+  };
+
+  const loadingScreen = () => {
+    return (
+      <div className="row" style={{ height: "300px" }}>
+        <div className=" mx-auto my-auto col-1">
+          <ClipLoader size={50} color={"#36D7B7"} loading={true} />
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -49,10 +59,12 @@ const App = () => {
           Search
         </button>
 
+        {recipes.length === 0 && loadingScreen()}
         <div className="row mt-4">
           {recipes.map((recipe, index) => (
             <div key={index} className="col-md-3">
               <Recipe
+                index={index}
                 title={recipe.recipe.label}
                 calories={recipe.recipe.calories}
                 healthLabels={recipe.recipe.healthLabels}
